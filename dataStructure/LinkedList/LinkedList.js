@@ -9,7 +9,6 @@ class LinkedList {
     let init = new Node("init");
     this.head = init; //처음에 데이터가 없다면 head는 null이다.
     this.tail = init;
-
     this.현재노드 = undefined;
     this.데이터수 = 0;
   }
@@ -26,18 +25,6 @@ class LinkedList {
     this.데이터수 += 1;
   }
 
-  toString() {
-    let 순회용현재노드 = this.head;
-    순회용현재노드 = 순회용현재노드.next;
-
-    let s = "";
-    for (let i = 0; i < this.데이터수; i++) {
-      s += `${순회용현재노드.data},`;
-      순회용현재노드 = 순회용현재노드.next;
-    }
-    return `[${s.slice(0, -2)}]`;
-  }
-
   get fullData() {
     let 순회용현재노드 = this.head;
     순회용현재노드 = 순회용현재노드.next;
@@ -47,7 +34,7 @@ class LinkedList {
       s += `${순회용현재노드.data},`;
       순회용현재노드 = 순회용현재노드.next;
     }
-    return JSON.parse(`[${s.slice(0, -2)}]`);
+    return JSON.parse(`[${s.slice(0, -1)}]`);
   }
 
   insert(index, data) {
