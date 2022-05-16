@@ -22,11 +22,18 @@ class DoubleyLinkedList {
   }
 
   append(data) {
-    let 새로운노드 = new Node(data);
+    let node = new Node(data);
 
-    this.tail.next = 새로운노드;
-    this.tail = 새로운노드;
-    this.데이터수 += 1;
+    if (this.head === null) {
+      this.head = node;
+      this.tail = node;
+    } else {
+      this.tail.next = node;
+      node.prev = this.tail;
+      this.tail = node;
+    }
+
+    this.length++;
   }
 
   toString() {
