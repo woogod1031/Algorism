@@ -60,19 +60,43 @@ class DoubleyLinkedList {
     return JSON.parse(`[${s.slice(0, -2)}]`);
   }
 
-  insert(index, data) {
-    let 순회용현재노드 = this.head;
-    순회용현재노드 = 순회용현재노드.next;
-
-    for (let i = 0; i < index - 1; i++) {
-      순회용현재노드 = 순회용현재노드.next;
+  insert(data, position = 0) {
+    if (position < 0 || position > this.length) {
+      return false;
     }
 
-    let 새로운노드 = new Node(data);
+    let node = new Node(value);
+    let current = this.head;
+    let index = 0;
+    let prev; // 이전 노드 값 저장
 
-    새로운노드.next = 순회용현재노드.next;
-    순회용현재노드.next = 새로운노드;
+    if (position === 0) {
+      if (this.head === null) {
+        this.head = node;
+        this.tail = node;
+      } else {
+        node.next = current;
+        current.prev = node;
+        this.head = node;
+      }
+    } else if (position === this.length) {
+      current = this.tail;
+      current.next = node;
+      node.prev = current;
+      this.tail = node;
+    } else {
+      while (index++ < position) {
+        prev = current;
+        current = current.next;
+      }
+      node.next = current;
+      prev.next = node;
 
-    this.데이터수 += 1;
+      current.prev = node;
+      node.prev = prev;
+    }
+    this.length++;
+
+    return true;
   }
 }
