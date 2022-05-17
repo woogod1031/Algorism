@@ -12,91 +12,88 @@ class DoubleyLinkedList {
     let init = new Node("init");
     this.head = init; //처음에 데이터가 없다면 head는 null이다.
     this.tail = init;
-
-    this.현재노드 = undefined;
-    this.데이터수 = 0;
+    this.dataNum = 0;
   }
 
   length() {
-    return this.데이터수;
+    return this.dataNum;
   }
 
   append(data) {
-    let node = new Node(data);
+    let newNode = new Node(data);
 
-    if (this.head === null) {
-      this.head = node;
-      this.tail = node;
+    if (this.head.data === "init") {
+      this.head = newNode;
+      this.tail = newNode;
     } else {
-      this.tail.next = node;
-      node.prev = this.tail;
-      this.tail = node;
+      this.tail.next = newNode;
+      newNode.prev = this.tail;
+      this.tail = newNode;
     }
-
-    this.length++;
-  }
-
-  toString() {
-    let 순회용현재노드 = this.head;
-    순회용현재노드 = 순회용현재노드.next;
-
-    let s = "";
-    for (let i = 0; i < this.데이터수; i++) {
-      s += `${순회용현재노드.data},`;
-      순회용현재노드 = 순회용현재노드.next;
-    }
-    return `[${s.slice(0, -2)}]`;
+    this.dataNum += 1;
   }
 
   get fullData() {
-    let 순회용현재노드 = this.head;
-    순회용현재노드 = 순회용현재노드.next;
+    let currentNode = this.head;
+    currentNode = currentNode.next;
 
     let s = "";
-    for (let i = 0; i < this.데이터수; i++) {
-      s += `${순회용현재노드.data},`;
-      순회용현재노드 = 순회용현재노드.next;
+    for (let i = 0; i < this.dataNum; i++) {
+      s += `${currentNode.data},`;
+      currentNode = currentNode.next;
     }
-    return JSON.parse(`[${s.slice(0, -2)}]`);
+    return JSON.parse(`[${s.slice(0, -1)}]`);
   }
 
-  insert(data, position = 0) {
-    if (position < 0 || position > this.length) {
-      return false;
-    }
+  insert(index, data) {
+    let currentNode = this.head; //순회용
+    let newNode = new Node(data);
 
-    let node = new Node(value);
-    let current = this.head;
-    let index = 0;
-    let prev; // 이전 노드 값 저장
-
-    if (position === 0) {
-      if (this.head === null) {
-        this.head = node;
-        this.tail = node;
-      } else {
-        node.next = current;
-        current.prev = node;
-        this.head = node;
+    if (index === 0) {
+      newNode.next = currentNode;
+      if (currentNode != null) {
+        currentNode.prev = newNode;
       }
-    } else if (position === this.length) {
-      current = this.tail;
-      current.next = node;
-      node.prev = current;
-      this.tail = node;
+      this.head = newNode;
+    } else if (index === this.dataNum) {
+      let tailNode = this.tail;
+      tailNode.next = newNode;
+      newNode.prev = tailNode;
+      this.tail = newNode;
     } else {
-      while (index++ < position) {
-        prev = current;
-        current = current.next;
+      for (let i = 0; i < index - 1; i++) {
+        currentNode = currentNode.next;
       }
-      node.next = current;
-      prev.next = node;
+      newNode.next = currentNode.next;
+      currentNode.next.prev = newNode;
 
-      current.prev = node;
-      node.prev = prev;
+      currentNode.next = newNode;
+      newNode.prev = currentNode;
     }
-    this.length++;
 
-    return true;
+    this.dataNum += 1;
+  }
+
+  remove(data) {
+    let currentNode = this.head;
+    let prev = currentNode;
+
+    while (currentNode.data != value && currentNode.next != null) {
+      prev = currentNode;
+      currentNode = currentNode.next;
+    }
+
+    if (currentNode === this.head) {
+      this.head = currentNode.next;
+      if (this.dataNum === 1) this.tail = null;
+      else this.head.prev = null;
+    } else if (currentNode === this.tail) {
+      this.tail = currentNode.prev;
+      this.tail.next = null;
+    } else {
+      prev.next = currentNode.next;
+      currentNode.next.prev = prev;
+    }
+    this.dataNum -= 1;
   }
 }

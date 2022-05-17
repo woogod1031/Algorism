@@ -9,48 +9,47 @@ class LinkedList {
     let init = new Node("init");
     this.head = init; //처음에 데이터가 없다면 head는 null이다.
     this.tail = init;
-    this.현재노드 = undefined;
-    this.데이터수 = 0;
+    this.dataNum = 0;
   }
 
   length() {
-    return this.데이터수;
+    return this.dataNum;
   }
 
   append(data) {
-    let 새로운노드 = new Node(data);
+    let newNode = new Node(data);
 
-    this.tail.next = 새로운노드;
-    this.tail = 새로운노드;
-    this.데이터수 += 1;
+    this.tail.next = newNode;
+    this.tail = newNode;
+    this.dataNum += 1;
   }
 
   get fullData() {
-    let 순회용현재노드 = this.head;
-    순회용현재노드 = 순회용현재노드.next;
+    let currentNode = this.head;
+    currentNode = currentNode.next;
 
     let s = "";
-    for (let i = 0; i < this.데이터수; i++) {
-      s += `${순회용현재노드.data},`;
-      순회용현재노드 = 순회용현재노드.next;
+    for (let i = 0; i < this.dataNum; i++) {
+      s += `${currentNode.data},`;
+      currentNode = currentNode.next;
     }
     return JSON.parse(`[${s.slice(0, -1)}]`);
   }
 
   insert(index, data) {
-    let 순회용현재노드 = this.head;
-    순회용현재노드 = 순회용현재노드.next;
+    let currentNode = this.head;
+    currentNode = currentNode.next;
 
     for (let i = 0; i < index - 1; i++) {
-      순회용현재노드 = 순회용현재노드.next;
+      currentNode = currentNode.next;
     }
 
-    let 새로운노드 = new Node(data);
+    let newNode = new Node(data);
 
-    새로운노드.next = 순회용현재노드.next;
-    순회용현재노드.next = 새로운노드;
+    newNode.next = currentNode.next;
+    currentNode.next = newNode;
 
-    this.데이터수 += 1;
+    this.dataNum += 1;
   }
 }
 
