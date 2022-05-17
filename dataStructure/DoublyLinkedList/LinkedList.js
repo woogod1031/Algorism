@@ -61,7 +61,7 @@ class DoubleyLinkedList {
       newNode.prev = tailNode;
       this.tail = newNode;
     } else {
-      for (let i = 0; i < index - 1; i++) {
+      for (i = 0; i < index - 1; i++) {
         currentNode = currentNode.next;
       }
       newNode.next = currentNode.next;
@@ -74,26 +74,24 @@ class DoubleyLinkedList {
     this.dataNum += 1;
   }
 
-  remove(data) {
-    let currentNode = this.head;
-    let prev = currentNode;
-
-    while (currentNode.data != value && currentNode.next != null) {
-      prev = currentNode;
-      currentNode = currentNode.next;
-    }
-
-    if (currentNode === this.head) {
-      this.head = currentNode.next;
-      if (this.dataNum === 1) this.tail = null;
-      else this.head.prev = null;
-    } else if (currentNode === this.tail) {
-      this.tail = currentNode.prev;
+  remove(index) {
+    const currentNode = this.head;
+    if (index === 0) {
+      this.head = this.head.next;
+      if (head != null) {
+        this.head.prev = null;
+      }
+    } else if (index === this.dataNum) {
+      this.tail = this.tail.prev;
       this.tail.next = null;
     } else {
-      prev.next = currentNode.next;
-      currentNode.next.prev = prev;
+      for (let i = 0; i < index - 1; i++) {
+        currentNode = currentNode.next;
+      }
+      const deleteNode = currentNode.next;
+      const afterNode = deleteNode.next;
+      currentNode.next = afterNode;
+      afterNode.prev = currentNode;
     }
-    this.dataNum -= 1;
   }
 }
