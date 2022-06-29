@@ -7,9 +7,9 @@ class Solution(object):
         def dfs(row):
 
             def is_ok_on(nth_row):
-                for rows in range(nth_row): #0,1,2
+                for rows in range(nth_row):  # 0,1,2
                     if visited[nth_row] == visited[rows] or\
-                        nth_row - rows == abs(visited[nth_row] - visited[rows]):
+                            nth_row - rows == abs(visited[nth_row] - visited[rows]):
                         return False
                 return True
 
