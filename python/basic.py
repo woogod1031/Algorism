@@ -228,3 +228,186 @@ from sys import stdin
 a = stdin.readline()
 b = int(stdin.readline())
 c = float(stdin.readline())
+
+# 들여쓰기
+
+if True:
+  print("Hello world")  #4칸 들여쓰기
+for n in range(0, 10):
+  print(n) #2칸 들여쓰기
+#문법 오류
+
+# 조건문 
+
+# if, else 그리고 else if를 축약한 elif가 쓰인다.
+def sgn(x):
+    if x > 0:
+        return 1
+    elif x == 0:
+        return 0
+    else:
+        return -1 
+# 가독성과 퍼포먼스를 고려하여 적절하게 설계
+#             
+def sgn(x):
+    if x > 0:
+        return 1
+    if x == 0:
+        return 0
+    return -1
+
+a = 50
+if a < 100:
+  print(1)
+elif a > 90:
+  print(2)
+else:
+  print(3)
+
+# 2항 연산자
+# ||와 &&가 아니라 or과 and가 쓰인다.
+x = 1
+y = 2
+
+x or y
+
+var = 'Hello' or []
+print(var)
+# Hello
+
+if True and False:
+  print("true!!")
+else:
+  print("false!")
+# false!
+
+# 3항 연산자
+
+# 참인 경우와 거짓인 경우 다른 값을 갖는 것
+x if T else y
+
+def sgn(x):
+  return 1 if x > 0 else (0 if x == 0 else -1)
+print(sgn(1))
+
+# 반복문
+
+# for문
+for x in X:
+  todo
+
+# for i in range(start, stop[, step]):
+#   todo
+# start 이상 및 이하부터 stop의 초과 및 미만을 의미한다
+for i in range(10):
+  print(i) # 0 1 2 3 4 5 6 7 8 9
+
+# start의 기본값은 0, step의 기본값은 1로 설정되며, 0부터 (전달값 - 1)까지의 수를 하나씩 가져와 i에 저장
+
+for i in range(10,0,-2): 
+  print(i) # 10 8 6 4 2
+
+arr = ['a', 'b', 'c', 'd']
+for x in arr:
+  print(x) # 'a', 'b', 'c', 'd'
+
+star = "★"
+for i in range (1, 5):
+  print(star * i)
+
+# while 문
+
+while C:
+  todo
+
+i = 0
+while i < 10:
+  print(i)
+  i += 1
+
+# 함수 정의
+
+# 일반함수
+
+def multiply(a,b):
+  return a * b
+
+game = 3
+boy = 2
+
+# global 이라는 명령어를 사용하여 함수 안에서도 전역변수 사용을 명시
+# 명시한다고 표현한 이유는 함수가 정의될 때 스코프에 전역변수를 포함하기 때문이다. 
+# 하지만 함수 내에서 값을 수정하면 실제 전역변수는 수정되지 않아 global 키워드로 수정할 수 있다.
+
+def multiply():  
+  global game, boy
+  return game * boy
+
+# Python에서 변수가 여럿인 함수를 짤 때 사용할 수 있는 방법으로 asterisk(*)를 사용하는 것이 있다. 
+# 변수명 앞에 asterisk를 하나 붙이면, 입력받은 변수들의 튜플을 의미한다.
+def function(*args):
+  print(args)
+funciton(1,2,3,4) # (1, 2, 3, 4)를 출력.
+
+# Asterisk를 2개 붙인 것은 키워드 변수를 의미한다. 
+# 이때, (키워드 - 값)의 딕셔너리 형태가 된다. 이때, 키워드는 str이다.
+
+def func(**kwargs):
+  print(kwargs)
+
+func(a = 1, b = 2) # {'a': 1, 'b': 2}를 출력
+
+# 키워드 > 일반 > ** 변수 > * 변수 순서로 인식
+def function(a, b = 0, *args, **kwargs):
+    print("a =", a)
+    print("b =", b)
+    print("args = ", args)
+    print("kwargs =", kwargs)
+
+function(1, 2, 3, i = 5)
+
+# a = 1
+# b = 2
+# args = (3,)
+# kwargs = {'i': 5}
+
+# 람다 함수
+# 람다 함수는 익명 함수를 뜻하며, 선언한 즉시 함수 그 자체가 되어 실행 가능하다.
+# 함수도 일종의 객체로 취급하기 때문에 변수에 담거나 인자로 넘길 수 있다.
+square = lambda n: n**2
+square(5) # 25
+
+add = lambda m, n: m+n
+one = lambda: 1
+
+# 파이썬의 람다 함수는 한 줄밖에 쓸 수 없다.
+
+# Python에서 람다 함수의 사용은 가독성을 헤치므로 추천되지 않는다.
+# 다만, 람다 함수의 적절한 사용은 편의성을 높여주므로 가독성을 헤치지 않는 정도로 적절히 사용하는 것이 좋다.
+
+# 예를 들어, map 함수나 functools 모듈의 reduce 함수와 lambda 함수의 궁합이 좋다.
+# map은 iterable한 자료형으로, 함수와 다른 iterable한 객체으로 만든다.
+arr = map(func, iter)
+arr[i] == func(iter[i]) #True
+
+from functools import reduce
+# reduce는 이변수함수와 iterable한 객체를 인자로 받는 함수이다. reduce의 작용은 대략적으로 다음과 같다.
+def names_by_sex(acc, cur):
+  sex = cur["sex"]
+  if sex not in acc:
+      acc[sex] = []
+  acc[sex].append(cur["name"])
+  return acc
+
+reduce(names_by_sex, users, {}) 
+# {'M': ['Brett Holland', 'Michael Jenkins'], 'F': ['Madison Martinez', 'Karen Rodriguez', 'Amber Rhodes']}
+
+# 이렇게 함수를 따로 생성하는게 아닌 lambda로 간편하게 선언
+# 이를 lambda 함수와 함께 사용하면 다음과 같이 사용할 수 있다.
+arr = list(map(lambda x: x**3, range(7)))
+
+print(arr) # [0, 1, 8, 27, 64, 125, 216]
+
+total = reduce(lambda x, y: x+y, [1, 3, 4])
+
+print(total) # 1 + 3 + 4 = 8
