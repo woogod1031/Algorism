@@ -19,7 +19,7 @@ arr = [0] * 100
 price = 0
 
 for _ in range(3):
-  st, et = map(int,input().split())
+  st, et = map(int, stdin.readline().split())
   for point in range(st, et):
     arr[point]+=1
 
