@@ -5,8 +5,8 @@ l = list(map(int, stdin.readline().split()))
 arr = [0] * n 
 
 for i in range(n):
-  count = l[i] # 1
-  for j in range(n): # 0 1 2 3 4 5 6
+  count = l[i]
+  for j in range(n):
     if (count == 0 and arr[j] == 0):
       arr[j] = i + 1            
       break
