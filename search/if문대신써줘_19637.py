@@ -22,8 +22,9 @@ def search(start, end, array, val):
       start = mid + 1
     else:
       end = mid - 1
-  print(array[end + 1][0])
+  print(array[start][0])
 
 for _ in range(m):
   x = int(input())
   search(0, len(arr) - 1, arr, x)
+
