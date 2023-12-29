@@ -52,6 +52,7 @@ def dijkstra(start):
       
 dijkstra(start)
 
+#------------------------print------------------------#
 for i in range(1, n + 1):
   if distance[i] == INF:
     print("INFINITY")
