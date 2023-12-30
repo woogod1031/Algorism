@@ -41,14 +41,14 @@ def dijkstra(start):
   distance[start] = 0 
 
   while queue:
-    dist, now = heapq.heappop(queue)
-    if distance[now] < dist:
+    dist, cur_node = heapq.heappop(queue)
+    if distance[cur_node] < dist:
       continue
-    for i in graph[now]:
-      cost = dist + i[1]
-      if cost < distance[i[0]]:
-        distance[i[0]] = cost
-        heapq.heappush(queue, (cost, i[0])) 
+    for nd, di in graph[cur_node]:
+      cost = dist + di
+      if cost < distance[nd]:
+        distance[nd] = cost
+        heapq.heappush(queue, (cost, nd)) 
       
 dijkstra(start)
 
