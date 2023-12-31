@@ -13,6 +13,7 @@ result = 0
 for _ in range(e):
     a, b, cost = map(int, input().split())
     # 비용순으로 정렬하기 위해 튜플의 첫 번째 원소를 비용으로 설정
+    # a to b, b to a로 이동하는 비용 cost
     edges.append((cost, a, b))
 
 edges.sort()
