@@ -27,12 +27,29 @@ def find_parent(parent, x):
 
 # ------------------------define------------------------#
 
+# 간선 정의기
+# for i in range(e):
+#     a, b = map(int, input().split())
+#     union_parent(parent, a, b)
+
+# 사이클 발생 여부 조회기
+cycle = False
+
 for i in range(e):
     a, b = map(int, input().split())
-    union_parent(parent, a, b)
-
+    # 사이클이 발생한 경우 종료
+    if find_parent(parent, a) == find_parent(parent, b):
+        cycle = True
+        break
+    else:
+        union_parent(parent, a, b)
 
 # ------------------------print------------------------#
+
+if cycle:
+    print('cycle 발생')
+else:
+    print('cycle 미 발생')
 
 print('각 원소가 속한 집합: ', end='')
 for i in range(1, v + 1):
