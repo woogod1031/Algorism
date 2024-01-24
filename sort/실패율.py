@@ -8,26 +8,18 @@
 def solution(N, stages):
     answer = []
     length = len(stages)
-    stages.sort(reverse=True)  # [1, 2, 2, 2, 3, 3, 4, 6]
+    for i in range(1, N + 1):
+        count = stages.count(i)
+        if length == 0:
+            fail = 0
+        else:
+            fail = count / length
 
-    total = length
-    prev = 0
-
-    for i in range(N):
-        for j in range(length):
-            if stages[j] > (i+1):
-                prev += 1
-            if stages[j] <= (i+1) or j == length - 1:
-                if total == 0:
-                    answer.append([0, i+1])
-                else:
-                    answer.append(((total-prev)/total, i + 1))
-                total = prev
-                prev = 0
-                break
-
-    answer.sort(key=lambda x: (-x[0], x[1]))
-    return [i[1] for i in answer]
+        answer.append((i, fail))
+        length -= count
+    print(answer)
+    answer.sort(key=lambda x: (-x[1], x[0]))
+    return [i[0] for i in answer]
 
 
-print(solution(2, [3]))
+print(solution(5, [2, 1, 2, 6, 2, 4, 3, 3]))
