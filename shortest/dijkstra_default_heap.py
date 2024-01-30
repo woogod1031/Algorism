@@ -7,7 +7,7 @@ INF = int(1e9)
 n, m = map(int, input().split())
 # 시작 노드(1)
 start = int(input())
-graph = [[] for i in range(n + 1)]
+graph = [[] for _ in range(n + 1)]
 # 최단 거리 초기화
 distance = [INF] * (n+1)
 
@@ -28,33 +28,36 @@ distance = [INF] * (n+1)
 # 5 3 1
 # 5 6 2
 for _ in range(m):
-  # a에서 b로가는 비용 c
-  a,b,c = map(int, input().split())
-  graph[a].append((b,c))
+    # a에서 b로가는 비용 c
+    a, b, c = map(int, input().split())
+    graph[a].append((b, c))
 
-#------------------------setting------------------------#
+# ------------------------setting------------------------#
+
+
 def dijkstra(start):
-  queue = []
-  # heapq에서 튜플의 첫번째 원소를 기준으로 우선순위를 정한다.
-  # 따라서 최단거리를 추출하기 위해 튜플은 (거리(0), 노드(1))로 구성된다.
-  heapq.heappush(queue, (0, start))
-  distance[start] = 0 
+    queue = []
+    # heapq에서 튜플의 첫번째 원소를 기준으로 우선순위를 정한다.
+    # 따라서 최단거리를 추출하기 위해 튜플은 (거리(0), 노드(1))로 구성된다.
+    heapq.heappush(queue, (0, start))
+    distance[start] = 0
 
-  while queue:
-    dist, cur_node = heapq.heappop(queue)
-    if distance[cur_node] < dist:
-      continue
-    for nd, di in graph[cur_node]:
-      cost = dist + di
-      if cost < distance[nd]:
-        distance[nd] = cost
-        heapq.heappush(queue, (cost, nd)) 
-      
+    while queue:
+        dist, cur_node = heapq.heappop(queue)
+        if distance[cur_node] < dist:
+            continue
+        for nd, di in graph[cur_node]:
+            cost = dist + di
+            if cost < distance[nd]:
+                distance[nd] = cost
+                heapq.heappush(queue, (cost, nd))
+
+
 dijkstra(start)
 
-#------------------------print------------------------#
+# ------------------------print------------------------#
 for i in range(1, n + 1):
-  if distance[i] == INF:
-    print("INFINITY")
-  else:
-    print(distance[i])
+    if distance[i] == INF:
+        print("INFINITY")
+    else:
+        print(distance[i])

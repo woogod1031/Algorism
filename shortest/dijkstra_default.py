@@ -53,17 +53,18 @@ def dijkstra(start):
     visited[start] = True
     for j in graph[start]:
         distance[j[0]] = j[1]
+
     for _ in range(n-1):
         now = get_smallest_node()
         visited[now] = True
-        for j in graph[now]:
+        for i in graph[now]:
             # 만약 graph[4]일 떄: graph[4] = [(3, 3), (5, 1)]
-            # 1 => 4 => 3 값이: cost = distance[now] + j[1]
-            # 1 => 3 값보다 작으면: cost < distance[j[0]]:
-            # 3까지 가는 최단경로를 변경해준다: distance[j[0]] = cost
-            cost = distance[now] + j[1]
-            if cost < distance[j[0]]:
-                distance[j[0]] = cost
+            # 1 => 4 => 3 값이: cost = distance[now] + i[1]
+            # 1 => 3 값보다 작으면: cost < distance[i[0]]:
+            # 3까지 가는 최단경로를 변경해준다: distance[i[0]] = cost
+            cost = distance[now] + i[1]
+            if cost < distance[i[0]]:
+                distance[i[0]] = cost
 
 
 dijkstra(start)
