@@ -23,7 +23,7 @@ for i in range(1, n + 1):
     for j in range(1, n + 1):
         if graph[i][j] != INF or graph[j][i] != INF:
             cnt += 1
-    if cnt == result:
+    if cnt == n:
         result += 1
 
 print(result)
