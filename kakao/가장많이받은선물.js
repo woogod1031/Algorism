@@ -1,38 +1,38 @@
-function solution(friends, gifts) {
+function solution(friends, gifts = []) {
   const len = friends.length;
-  const friendsGraph = new Map();
-  const giftsGraph = new Array(len).fill(0).map(() => new Array(len).fill(0));
+  const friendsGraph = {};
+  const giftGraph = new Array(len).fill(0).map(() => new Array(len).fill(0));
   const rankInfo = new Array(len).fill(0);
   const nextMonth = new Array(len).fill(0);
 
-  friends.forEach((name, idx) => {
-    friendsGraph.set(name, idx);
+  friends.forEach((e, i) => {
+    friendsGraph[e] = i;
   });
 
-  gifts.forEach((info) => {
-    const [a, b] = info.split(" ");
-    giftsGraph[friendsGraph.get(a)][friendsGraph.get(b)]++;
+  gifts.forEach((e, i) => {
+    const [a, b] = e.split(" ");
+    giftGraph[friendsGraph[a]][friendsGraph[b]]++;
   });
 
   for (let i = 0; i < len; i++) {
-    rankInfo[i] = giftsGraph[i].reduce((acc, cur) => (acc += cur), 0);
-
+    rankInfo[i] = giftGraph[i].reduce((acc, cur) => (acc += cur), 0);
     for (let j = 0; j < len; j++) {
-      rankInfo[i] -= giftsGraph[j][i];
+      rankInfo[i] -= giftGraph[j][i];
     }
   }
 
   for (let i = 0; i < len; i++) {
     for (let j = i + 1; j < len; j++) {
-      if (j == i) continue;
-      if (giftsGraph[i][j] > giftsGraph[j][i]) nextMonth[i]++;
-      if (giftsGraph[i][j] < giftsGraph[j][i]) nextMonth[j]++;
-      if (giftsGraph[i][j] === giftsGraph[j][i]) {
+      if (i == j) continue;
+      if (giftGraph[i][j] > giftGraph[j][i]) nextMonth[i]++;
+      if (giftGraph[i][j] < giftGraph[j][i]) nextMonth[j]++;
+      if (giftGraph[i][j] == giftGraph[j][i]) {
         if (rankInfo[i] > rankInfo[j]) nextMonth[i]++;
-        if (rankInfo[i] < rankInfo[j]) nextMonth[j]++;
+        if (rankInfo[i] < rankInfo[j]) nextMonth[i]++;
       }
     }
   }
+
   return Math.max(...nextMonth);
 }
 
