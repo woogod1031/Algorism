@@ -1,40 +1,30 @@
-const dx = [1, -1, 0, 0];
-const dy = [0, 0, 1, -1];
-
 function solution(maps) {
-  let result = maps.length * maps[0].length;
-  let check = false;
-  function go(map, x, y, num) {
-    const new_map = map.map((v) => [...v]);
-    new_map[y][x] = 0;
+  let dx = [1, -1, 0, 0];
+  let dy = [0, 0, 1, -1];
+  const queue = [];
+  const n = maps[0].length;
+  const m = maps.length;
 
-    if (x == map[0].length - 1 && y == map.length - 1) {
-      result = Math.min(result, num);
-      check = true;
-      return;
-    }
-    for (let i = 0; i < 4; i++) {
-      const nx = x + dx[i];
-      const ny = y + dy[i];
-      if (
-        nx < 0 ||
-        ny < 0 ||
-        nx >= new_map[0].length ||
-        ny >= new_map.length ||
-        new_map[ny][nx] == 0
-      ) {
-        continue;
+  queue.push([0, 0, 1]);
+  maps[0][0] = 0;
+
+  while (queue.length > 0) {
+    let size = queue.length;
+    for (let i = 0; i < size; i++) {
+      let [x, y, num] = queue.shift();
+      for (let i = 0; i < 4; i++) {
+        const nx = x + dx[i];
+        const ny = y + dy[i];
+        if (nx >= 0 && nx < n && ny >= 0 && ny < m && maps[ny][nx] == 1) {
+          if (nx == n - 1 && ny == m - 1) {
+            return num + 1;
+          }
+          queue.push([nx, ny, num + 1]);
+          maps[ny][nx] = 0;
+        }
       }
-      new_map[ny][nx] = 0;
-      go(new_map, nx, ny, num + 1);
     }
   }
-
-  go(maps, 0, 0, 1);
-  if (!check) {
-    return -1;
-  }
-  return result;
+  return -1;
 }
-
 solution([[1], [1]]);
