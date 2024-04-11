@@ -1,19 +1,51 @@
 function solution(info, query) {
-  const joiner = info.map((v) => v.split(" "));
+  function getCombination(arr, score, map, start) {
+    const key = arr.join("");
+    if (Array.isArray(map[key])) map[key].push(score);
+    else map[key] = [score];
 
-  const answer = query.map((c) => {
-    const condition = c.split(" ").filter((v) => v != "and");
+    for (let i = start; i < arr.length; i++) {
+      let combiArr = arr.slice();
+      combiArr[i] = "-";
+      getCombination(combiArr, score, map, i + 1);
+    }
+  }
 
-    return joiner.filter((j) => {
-      return j.every((k, idx) => {
-        if (condition[idx] == "-") return true;
-        if (idx == 4 && +k >= +condition[idx]) return true;
-        if (condition[idx] == k) return true;
-        return false;
-      });
-    }).length;
-  });
-  return answer;
+  function binarySearch(arr, score) {
+    if (!arr) return 0;
+    let left = 0;
+    let right = arr.length;
+
+    while (left < right) {
+      let mid = Math.floor((left + right) / 2);
+
+      if (arr[mid] >= score) right = mid;
+      else left = mid + 1;
+    }
+
+    return arr.length - left;
+  }
+
+  const map = {};
+
+  for (let i = 0; i < info.length; i++) {
+    const infos = info[i].split(" ");
+    const score = infos.pop();
+    getCombination(infos, score, map, 0);
+  }
+
+  for (let key in map) map[key].sort((a, b) => a - b);
+
+  const result = [];
+
+  for (let i = 0; i < query.length; i++) {
+    let queryString = query[i].split(" ").filter((v) => v != "and");
+    const score = Number(queryString.pop());
+    queryString = queryString.join("");
+    let scoreIndex = binarySearch(map[queryString], score);
+    result.push(scoreIndex);
+  }
+  return result;
 }
 
 console.log(
