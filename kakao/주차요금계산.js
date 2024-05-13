@@ -1,43 +1,31 @@
 function solution(fees = [], records = []) {
   const [d_time, d_cost, m_t, m_cost] = fees;
-  const last_min = 23 * 60 + 59;
+  const last_min = 1439;
 
   const map = new Map();
 
-  records.reverse().forEach((val) => {
-    const [time, _id, method] = val.split(" ");
+  records.forEach((val) => {
+    const [time, _id, type] = val.split(" ");
     const [_hour, _min] = time.split(":").map((v) => Number(v));
     const total_min = _hour * 60 + _min;
+
     const current_time = map.get(_id);
-    if (method == "IN") {
-      if (current_time) {
-        map.set(_id, current_time - total_min);
-      } else {
-        map.set(_id, last_min - total_min);
-      }
-    } else {
-      if (current_time) {
-        map.set(_id, current_time + total_min);
-      } else {
-        map.set(_id, total_min);
-      }
-    }
+    if (!current_time) map.set(_id, 0);
+
+    const n_current_time = map.get(_id);
+    if (type === "IN") map.set(_id, n_current_time + (last_min - total_min));
+    if (type === "OUT") map.set(_id, n_current_time - (last_min - total_min));
   });
 
-  const answer = Array.from(map, (val) => val).reduce((acc, [key, val]) => {
-    const time =
-      val - d_time > 0 ? Math.ceil((val - d_time) / m_t) * m_cost : 0;
-    return {
-      ...acc,
-      [key]: d_cost + time,
-    };
-  }, {});
+  const answer = [];
 
-  return Object.entries(answer)
-    .sort((a, b) => {
-      return +a[0] - +b[0];
-    })
-    .map(([c, d]) => d);
+  for (let [car, _time] of map) {
+    if (_time <= d_time) _time = d_cost;
+    else _time = Math.ceil((_time - d_time) / m_t) * m_cost + d_cost;
+    answer.push([car, _time]);
+  }
+
+  return answer.sort((a, b) => a[0] - b[0]).map((v) => v[1]);
 }
 
 console.log(
