@@ -1,27 +1,24 @@
 function solution(gems) {
-  const set = new Set(gems);
-  let result = [0, 99999];
+  const gemVarietyCounts = new Set(gems).size;
 
-  gems.forEach((_, index) => {
-    const s = new Set();
-
-    inner: for (let i = index; i < gems.length; i++) {
-      if (s.has(gems[i])) {
-        continue;
-      } else {
-        s.add(gems[i]);
-
-        if (s.size == set.size) {
-          if (i - index < result[1] - result[0]) {
-            result = [index + 1, i + 1];
-          }
-          break inner;
-        }
-      }
+  const gemMap = new Map();
+  const gemLengths = [];
+  gems.forEach((gem, i) => {
+    gemMap.delete(gem);
+    gemMap.set(gem, i);
+    if (gemMap.size === gemVarietyCounts) {
+      gemLengths.push([gemMap.values().next().value + 1, i + 1]);
     }
   });
 
-  return [result[0], result[1]];
+  gemLengths.sort((a, b) => {
+    if (a[1] - a[0] === b[1] - b[0]) {
+      return a[1] - b[1];
+    }
+    return a[1] - a[0] - (b[1] - b[0]);
+  });
+
+  return gemLengths[0];
 }
 
 console.log(
