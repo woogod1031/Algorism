@@ -1,7 +1,7 @@
 // x보다 크고 x와 비트가 1~2개 다른 수들 중에서 제일 작은 수
 
 function solution(numbers) {
-  return numbers.map((n, i) => {
+  return numbers.map((n) => {
     const binary = n.toString(2).split("");
     // 뒤에서 가장 먼저 나오는 "0"
     const lastZeroIndex = binary.lastIndexOf("0");
