@@ -1,6 +1,5 @@
 function generateUniquePermutations(arr) {
   const result = [];
-
   function permute(current, remaining) {
     if (remaining.length === 0) {
       result.push(current.slice());
@@ -23,17 +22,6 @@ function generateUniquePermutations(arr) {
   }
 
   permute([], arr);
-  return result;
-}
-
-function getAllPermutations(arr, num) {
-  if (num == 1) return arr.map((a) => [a]);
-  const result = [];
-  arr.forEach((a, i, o) => {
-    const rest = o.slice(i + 1);
-    const permus = getAllPermutations(rest, num - 1);
-    result.push(...permus.map((p) => [a, ...p]));
-  });
   return result;
 }
 
