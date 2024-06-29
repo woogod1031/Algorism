@@ -1,52 +1,52 @@
-function solution(info, query) {
-  function getCombination(arr, score, map, start) {
-    const key = arr.join("");
-    if (Array.isArray(map[key])) map[key].push(score);
-    else map[key] = [score];
+const constants = [
+  ["cpp", "java", "python"],
+  ["backend", "frontend"],
+  ["junior", "senior"],
+  ["chicken", "pizza"],
+];
 
-    for (let i = start; i < arr.length; i++) {
-      let combiArr = arr.slice();
-      combiArr[i] = "-";
-      getCombination(combiArr, score, map, i + 1);
-    }
-  }
-
-  function binarySearch(arr, score) {
-    if (!arr) return 0;
-    let left = 0;
-    let right = arr.length;
-
-    while (left < right) {
-      let mid = Math.floor((left + right) / 2);
-
-      if (arr[mid] >= score) right = mid;
-      else left = mid + 1;
-    }
-
-    return arr.length - left;
-  }
-
-  const map = {};
-
-  for (let i = 0; i < info.length; i++) {
-    const infos = info[i].split(" ");
-    const score = infos.pop();
-    getCombination(infos, score, map, 0);
-  }
-
-  for (let key in map) map[key].sort((a, b) => a - b);
-
+function rc(array, origin, index) {
+  if (index == origin.length) return [array];
   const result = [];
-
-  for (let i = 0; i < query.length; i++) {
-    let queryString = query[i].split(" ").filter((v) => v != "and");
-    const score = Number(queryString.pop());
-    queryString = queryString.join("");
-    let scoreIndex = binarySearch(map[queryString], score);
-    result.push(scoreIndex);
+  for (let i = 0; i < origin[index].length; i++) {
+    result.push(...rc([...array, origin[index][i]], origin, index + 1));
   }
   return result;
 }
+
+function solution(info, query) {
+  const result = rc(
+    [],
+    constants.map((a) => [...a, "-"]),
+    0
+  );
+  const map = new Map();
+  result.forEach((v) => {
+    map.set(v.join(" and "), []);
+  });
+
+  info.forEach((v) => {
+    const array = v.split(" ");
+    const score = array.pop();
+    const _result = rc(
+      [],
+      array.map((a) => [a, "-"]),
+      0
+    ).map((_v) => _v.join(" and "));
+    _result.forEach((str) => {
+      const val = map.get(str);
+      map.set(str, [...val, +score]);
+    });
+  });
+
+  return query.map((string) => {
+    const array = string.split(" ");
+    const score = array.pop();
+    return map.get(array.join(" ")).filter((value) => value >= +score).length;
+  });
+}
+
+// ("- and - and - and - X");
 
 console.log(
   solution(
@@ -59,10 +59,10 @@ console.log(
       "python backend senior chicken 50",
     ],
     [
-      "java and backend and junior and pizza 100",
+      "java and backend and junior and pizza 100", // java backend junior pizza 100
       "python and frontend and senior and chicken 200",
       "cpp and - and senior and pizza 250",
-      "- and backend and senior and - 150",
+      "- and backend and senior and - 150", // - backend senior - 150
       "- and - and - and chicken 100",
       "- and - and - and - 150",
     ]
