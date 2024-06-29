@@ -1,52 +1,53 @@
-const constants = [
-  ["cpp", "java", "python"],
-  ["backend", "frontend"],
-  ["junior", "senior"],
-  ["chicken", "pizza"],
-];
+function rc(array, index, map, score) {
+  const key = array.join("");
+  if (Array.isArray(map[key])) map[key].push(score);
+  else map[key] = [score];
 
-function rc(array, origin, index) {
-  if (index == origin.length) return [array];
-  const result = [];
-  for (let i = 0; i < origin[index].length; i++) {
-    result.push(...rc([...array, origin[index][i]], origin, index + 1));
+  for (let i = index; i < array.length; i++) {
+    const copy = array.slice();
+    copy[i] = "-";
+    rc(copy, i + 1, map, score);
   }
-  return result;
+}
+
+function bs(arr, score) {
+  if (!arr) return 0;
+  let left = 0;
+  let right = arr.length;
+
+  while (left < right) {
+    let mid = Math.floor((left + right) / 2);
+
+    if (arr[mid] >= score) right = mid;
+    else left = mid + 1;
+  }
+
+  return arr.length - left;
 }
 
 function solution(info, query) {
-  const result = rc(
-    [],
-    constants.map((a) => [...a, "-"]),
-    0
-  );
-  const map = new Map();
-  result.forEach((v) => {
-    map.set(v.join(" and "), []);
-  });
+  const map = {};
 
   info.forEach((v) => {
     const array = v.split(" ");
     const score = array.pop();
-    const _result = rc(
-      [],
-      array.map((a) => [a, "-"]),
-      0
-    ).map((_v) => _v.join(" and "));
-    _result.forEach((str) => {
-      const val = map.get(str);
-      map.set(str, [...val, +score]);
-    });
+    rc(array, 0, map, score);
   });
+
+  for (let key in map) map[key].sort((a, b) => a - b);
 
   return query.map((string) => {
-    const array = string.split(" ");
-    const score = array.pop();
-    return map.get(array.join(" ")).filter((value) => value >= +score).length;
+    let qs = string.split(" ").filter((v) => v != "and");
+    const score = Number(qs.pop());
+    qs = qs.join("");
+    return bs(map[qs], score);
+    // if (Array.isArray(map[qs])) {
+    //   // map[qs].sort((a, b) => a - b);
+    //   return bs(map[qs], score);
+    // }
+    // return 0;
   });
 }
-
-// ("- and - and - and - X");
 
 console.log(
   solution(
