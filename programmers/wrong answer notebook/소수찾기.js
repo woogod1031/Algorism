@@ -35,4 +35,5 @@ function solution(numbers) {
   }).length;
 }
 
-console.log(solution("17"));
+// console.log(isPrime(1231));
+console.log(solution("1231"));
